@@ -1,14 +1,15 @@
-import Xlib.display
-import Xlib.ext.xtest as xtest
-import Xlib.XK
-from time import sleep
 import sys
+from time import sleep
 
 class robot:	
 	opsys = sys.platform
 
 	if opsys.find('linux') != -1:
 		def __init__(self):
+			import Xlib.display
+			import Xlib.ext.xtest as xtest
+			import Xlib.XK
+
 			self.keyboard = {
 			'`':'`', '1':'1', '2':'2', '3':'3', '4':'4', '5':'5', '6':'6', '7':'7', '8':'8', '9':'9', '0':'0', '-':'minus', '=':'equal',
 			'q':'q', 'w':'w', 'e':'e', 'r':'r', 't':'t', 'y':'y', 'u':'u', 'i':'i', 'o':'o', 'p':'p', '[':'braceleft', ']':'braceright', '\\':'backslash', 
@@ -60,8 +61,28 @@ class robot:
 			disp.flush()	
 
 	elif opsys.find('win32') != -1:
-		self.x = 1
-
+		def __init__(self):
+			import win32com.client
+			self.shell = win32com.client.Dispatch("WScript.Shell")
+			
+			self.keyboard = {
+				"`":"`", "1":"1", "2":"2", "3":"3", "4":"4", "5":"5", "6":"6", "7":"7", "8":"8", "9":"9", "0":"0", "-":"-", "=":"=", 
+				"q":"q", "w":"w", "e":"e", "r":"r", "t":"t", "y":"y", "u":"u", "i":"i", "o":"o", "p":"p", "[":"[", "]":"]", "\\":"\\", 
+				"a":"a", "s":"s", "d":"d", "f":"f", "g":"g", "h":"h", "j":"j", "k":"k", "l":"l", ";":";", "'":"'", 
+				"z":"z", "x":"x", "c":"c", "v":"v", "b":"b", "n":"n", "m":"m", ",":",", ".":".", "/":"/", 
+				"~":"~", "!":"{!}", "@":"@", "#":"{#}", "$":"$", "%":"%", "^":"{^}", "&":"&", "*":"*", "(":"(", ")":")", "_":"_", "+":"{+}", 
+				"Q":"Q", "W":"W", "E":"E", "R":"R", "T":"T", "Y":"Y", "U":"U", "I":"I", "O":"O", "P":"P", "{":"{{}", "}":"{}}", "|":"|", 
+				"A":"A", "S":"S", "D":"D", "F":"F", "G":"G", "H":"H", "J":"J", "K":"K", "L":"L", ":":":", "\"":"\"", 
+				"Z":"Z", "X":"X", "C":"C", "V":"V", "B":"B", "N":"N", "M":"M", "<":"<", ">":">", "?":"?", " ":"{SPACE}", 
+				"\n":"{ENTER}", "\t":"{TAB}", 
+				"\x00":"{LEFT}", "\x01":"{UP}", "\x02":"{RIGHT}", "\x03":"{DOWN}", "\x04":"{ESC}", "\x05":"{PRINTSCREEN}", "\x06":"", "\x07":"", 
+				"\x08":"{BACKSPACE}", "\x09":"{TAB}", "\x0a":"{ENTER}", "\x0b":"", "\x0c":"", "\x0d":"", "\x0e":"", "\x0f":"^f", 
+				"\x10":"", "\x11":"", "\x12":"", "\x13":"", "\x14":"", "\x15":"", "\x16":"", "\x17":"", 
+				"\x18":"", "\x19":"", "\x1a":"", "\x1b":"", "\x1c":"", "\x1d":"", "\x1e":"", "\x1f":""}
+			
+		def sendSingle(self, char):
+			self.shell.SendKeys(char)
+			
 
 	'''os independent methods'''
 	def sendChar(self, char):
@@ -79,9 +100,11 @@ class robot:
 			variance = (0x7 & ord(char)) / 100.0
 			sleep(stime)
 
+			
 kittens = robot()
 sleep(2)
 username = 'CAPSBOT@gmail.com'
 password = 'hunter2$MONEY!'
 kittens.typeOut(username + '\n')
 kittens.typeOut(password + '\n')
+quit()
