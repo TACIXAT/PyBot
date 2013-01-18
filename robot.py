@@ -85,14 +85,18 @@ class robot:
 			self.shell.SendKeys(char)
 
 		def sendModified(self, char, modifiers):
-			modList = [1,2,4]
-			lookup = {0:'', 1:'{LCTRL}', 2:'{LSHIFT}', 4:'{LALT}'}
+			CTRL = 1
+			SHIFT = 2
+			ALT = 4
+			modList = [CTRL,SHIFT,ALT]
+			lookup = {0:'', 1:'^', 2:'+', 4:'!'}
 			sendStr = ''
 
 			for modMask in modList:
-				sendStr += lookup[modifiers&mod]
+				sendStr += lookup[modifiers&modMask]
 
-			sendStr += keyboard[char]
+			sendStr += self.keyboard[char]
+			print sendStr
 			self.sendSingle(sendStr)
 			
 
@@ -124,5 +128,9 @@ kittens.sendModified('f',1)
 sleep(0.5)
 kittens.typeOut(username)
 sleep(0.5)
-kittens.sendModified('f',1|2)
+kittens.typeOut('\x04')
+sleep(0.5)
+kittens.typeOut('\n')
+sleep(0.5)
+kittens.sendModified('h',1|2)
 quit()
