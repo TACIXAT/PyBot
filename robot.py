@@ -2,6 +2,8 @@ import sys
 from time import sleep
 try:
 	import win32com.client
+	import win32con
+	import win32api
 except ImportError:
 	import Xlib.display
 	import Xlib.ext.xtest as xtest
@@ -98,6 +100,27 @@ class robot:
 			sendStr += self.keyboard[char]
 			print sendStr
 			self.sendSingle(sendStr)
+
+		def moveMouse(self, x, y):
+			swidth = win32api.GetSystemMetrics(0)
+			sheight =  win32api.GetSystemMetrics(1)
+			win32api.mouse_event(win32con.MOUSEEVENTF_MOVE | win32con.MOUSEEVENTF_ABSOLUTE, 
+			                     int(x/swidth*65535.0), int(y/sheight*65535.0))
+
+		def slowMoveMouse(self, x, y):
+			x=1
+
+		def clickMouse(self, button):
+			win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
+    		win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
+
+		def moveClickMouse(self, x, y, button):
+			swidth = win32api.GetSystemMetrics(0)
+			sheight =  win32api.GetSystemMetrics(1)
+			win32api.mouse_event(win32con.MOUSEEVENTF_MOVE | win32con.MOUSEEVENTF_ABSOLUTE, 
+			                     int(x/swidth*65535.0), int(y/sheight*65535.0))
+			win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
+    		win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
 			
 
 	'''os independent methods'''
