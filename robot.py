@@ -102,25 +102,33 @@ class robot:
 			self.sendSingle(sendStr)
 
 		def moveMouse(self, x, y):
-			swidth = win32api.GetSystemMetrics(0)
-			sheight =  win32api.GetSystemMetrics(1)
+			swidth = win32api.GetSystemMetrics(0) + 0.0
+			sheight =  win32api.GetSystemMetrics(1) + 0.0
 			win32api.mouse_event(win32con.MOUSEEVENTF_MOVE | win32con.MOUSEEVENTF_ABSOLUTE, 
 			                     int(x/swidth*65535.0), int(y/sheight*65535.0))
+			
 
 		def slowMoveMouse(self, x, y):
 			x=1
 
 		def clickMouse(self, button):
 			win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
-    		win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
+			win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
 
 		def moveClickMouse(self, x, y, button):
-			swidth = win32api.GetSystemMetrics(0)
-			sheight =  win32api.GetSystemMetrics(1)
-			win32api.mouse_event(win32con.MOUSEEVENTF_MOVE | win32con.MOUSEEVENTF_ABSOLUTE, 
-			                     int(x/swidth*65535.0), int(y/sheight*65535.0))
-			win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,x,y,0,0)
-    		win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,x,y,0,0)
+			buttons = [[2,4], [8,16], [32, 64]]
+			LEFT = 0
+			#RIGHT = 1
+			#MIDDLE = 2
+			swidth = win32api.GetSystemMetrics(0) + 0.0
+			sheight =  win32api.GetSystemMetrics(1) + 0.0
+			win32api.mouse_event(win32con.MOUSEEVENTF_MOVE | win32con.MOUSEEVENTF_ABSOLUTE, int(x/swidth*65535.0), int(y/sheight*65535.0))
+			#win32api.SetCursorPos([250,250])
+			sleep(0.5)
+			win32api.mouse_event(buttons[LEFT][0], 0, 0, 0, 0)
+			sleep(0.1)
+			win32api.mouse_event(buttons[LEFT][1], 0, 0, 0, 0)
+			sleep(0.1)
 			
 
 	'''os independent methods'''
@@ -142,18 +150,5 @@ class robot:
 			
 kittens = robot()
 sleep(2)
-username = 'CAPSBOT@gmail.com'
-password = 'hunter2$MONEY!'
-kittens.typeOut(username + '\n')
-kittens.typeOut(password + '\n')
-sleep(0.5)
-kittens.sendModified('f',1)
-sleep(0.5)
-kittens.typeOut(username)
-sleep(0.5)
-kittens.typeOut('\x04')
-sleep(0.5)
-kittens.typeOut('\n')
-sleep(0.5)
-kittens.sendModified('h',1|2)
+kittens.moveClickMouse(250, 250, 1)
 quit()
